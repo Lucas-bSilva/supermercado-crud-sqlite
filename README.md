@@ -4,7 +4,6 @@ Sistema desenvolvido em Python utilizando SQLite para gerenciamento de estoque d
 
 O sistema implementa um CRUD completo para Produtos (Estoque), incluindo geração de relatório resumido.
 
----
 
 ##  Objetivo do Projeto
 
@@ -19,7 +18,6 @@ Desenvolver um sistema CRUD para cadastro e gerenciamento de produtos de um supe
 
 Além disso, o sistema gera relatório resumido de estoque conforme exigido na especificação.
 
----
 
 ##  Modelagem
 
@@ -37,7 +35,6 @@ A classe `Produto` possui os seguintes atributos:
 
 O sistema utiliza uma classe genérica `CRUDManager` para gerenciar as operações de inserção, alteração, remoção, listagem e busca, conforme solicitado na especificação do projeto.
 
----
 
 ##  Funcionalidades do Sistema
 
