@@ -1,110 +1,256 @@
-#  Supermercado — CRUD de Produtos (Parte 1) com SQLite
+## ✅ README.md FINAL (SEM conflito e alinhado com seu projeto)
 
-Sistema desenvolvido em Python utilizando SQLite para gerenciamento de estoque de produtos, atendendo às especificações acadêmicas da Parte 1 do projeto da disciplina de Banco de Dados.
+```markdown
+# Supermercado — Controle de Estoque (CRUD em Python + SQLite)
 
-O sistema implementa um CRUD completo para Produtos (Estoque), incluindo geração de relatório resumido.
+## Descrição do Projeto
 
+Este projeto implementa um **Sistema de Controle de Estoque para Supermercado**, desenvolvido em **Python** com persistência de dados em **SQLite**.
 
-##  Objetivo do Projeto
+O sistema aplica o padrão **CRUD (Create, Read, Update, Delete)** para gerenciamento de produtos do estoque, permitindo cadastro, consulta, atualização e remoção de itens, além da geração de um **relatório consolidado** (quantitativo e financeiro) do estoque.
 
-Desenvolver um sistema CRUD para cadastro e gerenciamento de produtos de um supermercado, contendo obrigatoriamente as seguintes funcionalidades:
+O projeto foi desenvolvido como atividade prática da disciplina de **Banco de Dados (Parte 1)**, com foco em:
+- persistência de dados em banco relacional (SQLite)
+- organização modular do código
+- separação de responsabilidades (interface, persistência e relatórios)
+- geração de relatórios com informações consolidadas
 
-1. Inserir
-2. Alterar
-3. Pesquisar por nome
-4. Remover
-5. Listar todos
-6. Exibir um
+---
 
-Além disso, o sistema gera relatório resumido de estoque conforme exigido na especificação.
+## Objetivo do Sistema
 
+Permitir o gerenciamento básico e confiável do estoque de um supermercado, disponibilizando:
+- cadastro e manutenção de produtos
+- consulta rápida via pesquisa por nome
+- geração de relatório de estoque (resumo + detalhes)
 
-##  Modelagem
+---
 
-### Entidade Principal: Produto
+## Tecnologias Utilizadas
 
-A classe `Produto` possui os seguintes atributos:
+- **Python 3**
+- **SQLite3**
+- **Dataclasses** (modelagem da entidade)
+- **Context Managers** (controle seguro de conexão/commit)
+- **Git/GitHub** (versionamento)
 
-- `id`
-- `nome`
-- `categoria`
-- `preco`
-- `quantidade`
-- `codigo_barras`
-- `data_cadastro`
+---
 
-O sistema utiliza uma classe genérica `CRUDManager` para gerenciar as operações de inserção, alteração, remoção, listagem e busca, conforme solicitado na especificação do projeto.
+## Funcionalidades do Sistema
 
+### Operações CRUD (Produtos / Estoque)
+O menu do sistema permite:
+- **Inserir** produto
+- **Alterar** produto por ID
+- **Pesquisar por nome** (busca parcial)
+- **Remover** produto por ID (com confirmação)
+- **Listar todos** os produtos cadastrados
+- **Exibir um** produto específico por ID
 
-##  Funcionalidades do Sistema
+### Relatório de Estoque
+O sistema gera um relatório contendo:
+- quantidade de produtos cadastrados
+- quantidade total de itens em estoque
+- valor total do estoque
+- tabela detalhada com valor total por produto (**preço × quantidade**)
 
-Menu principal:
-[1] Inserir
-[2] Alterar
+---
+
+## Estrutura do Projeto
+
+```
+
+.
+├── main.py
+├── database.py
+├── crud_manager.py
+├── models.py
+├── reports.py
+├── utils.py
+├── supermercado.db
+└── README.md
+
+```
+
+### Descrição dos Módulos
+
+- **main.py**  
+  Interface via terminal (CLI) e controle do fluxo do sistema.
+
+- **database.py**  
+  Criação e inicialização do banco SQLite, controle de conexão, índices e reset do banco.
+
+- **crud_manager.py**  
+  Classe responsável por centralizar as operações CRUD (inserir, alterar, listar, remover, buscar).
+
+- **models.py**  
+  Modelo da entidade `Produto` utilizando `dataclass`.
+
+- **reports.py**  
+  Geração do relatório consolidado do estoque (resumo + tabela detalhada).
+
+- **utils.py**  
+  Funções utilitárias para validação de entrada (inteiro, float, data) e pausa do terminal.
+
+---
+
+## Modelo de Dados
+
+### Tabela: `produtos`
+
+| Campo         | Tipo    | Descrição                      |
+|--------------|---------|--------------------------------|
+| id           | INTEGER | Identificador único (PK)       |
+| nome         | TEXT    | Nome do produto (único)        |
+| categoria    | TEXT    | Categoria do produto           |
+| preco        | REAL    | Preço unitário                 |
+| quantidade   | INTEGER | Quantidade em estoque          |
+| data_cadastro| TEXT    | Data no formato YYYY-MM-DD     |
+
+**Restrições aplicadas (integridade):**
+- `nome` é **UNIQUE**
+- `preco >= 0`
+- `quantidade >= 0`
+
+---
+
+## Diagrama UML (Modelo de Classes)
+
+```
+
++-----------------------+
+|        Produto        |
++-----------------------+
+| id : int              |
+| nome : str            |
+| categoria : str       |
+| preco : float         |
+| quantidade : int      |
+| data_cadastro : str   |
++-----------------------+
+
+```
+       ▲
+       │
+       │ utiliza
+       │
+```
+
++-----------------------+
+|      CRUDManager      |
++-----------------------+
+| table : str           |
+| columns : list        |
+| nome_col : str        |
++-----------------------+
+| inserir()             |
+| alterar()             |
+| pesquisar_por_nome()  |
+| remover()             |
+| listar_todos()        |
+| exibir_um()           |
++-----------------------+
+
+```
+       ▲
+       │
+       │ usa
+       │
+```
+
++-----------------------+
+|       database.py     |
++-----------------------+
+| conectar()            |
+| init_db()             |
+| reset_db()            |
++-----------------------+
+
+```
+
+---
+
+## Fluxo de Funcionamento do Sistema
+
+```
+
+Usuário
+│
+▼
+main.py  (menu/CLI)
+│
+▼
+CRUDManager (operações CRUD)
+│
+▼
+database.py (conexão/SQLite)
+│
+▼
+SQLite (supermercado.db)
+
+````
+
+---
+
+## Como Executar o Projeto
+
+### 1) Executar o sistema
+No terminal, dentro da pasta do projeto:
+
+```bash
+python main.py
+````
+
+O arquivo `supermercado.db` será criado automaticamente na primeira execução (caso ainda não exista).
+
+---
+
+## Exemplo de Menu
+
+```
+SUPERMERCADO — CONTROLE DE ESTOQUE
+
+[1] Inserir produto
+[2] Alterar produto
 [3] Pesquisar por nome
-[4] Remover
+[4] Remover produto
 [5] Listar todos
-[6] Exibir um
-[7] Relatório de estoque (resumo)
+[6] Exibir um produto
+[7] Relatório de estoque
 [9] Resetar banco
 [0] Sair
-
-
----
-
-##  Relatório de Estoque
-
-O relatório apresenta:
-
-- Quantidade total de produtos cadastrados
-- Soma total de itens em estoque
-- Valor total do estoque (preço × quantidade)
-- Listagem organizada dos produtos cadastrados
+```
 
 ---
 
-##  Banco de Dados
+## Exemplo de Relatório
 
-- Banco utilizado: SQLite
-- Arquivo gerado automaticamente: `supermercado.db`
-- Criação automática na primeira execução
-- Estrutura gerenciada pelo arquivo `database.py`
+```
+========== RELATÓRIO DE ESTOQUE ==========
 
----
+Produtos cadastrados: 4
+Quantidade total em estoque: 68
+Valor total do estoque: R$ 482.50
 
-##  Como Executar o Projeto
-
-1. Certifique-se de ter o Python 3 instalado.
-2. No terminal, dentro da pasta do projeto, execute:
-
-python main.py
-
-
-O banco de dados será criado automaticamente na primeira execução.
+ID | Nome | Categoria | Preço | Qtd | Valor Total
+-------------------------------------------------
+1  | Arroz | Alimentos | 6.50 | 10 | 65.00
+2  | Feijão | Alimentos | 7.80 | 8 | 62.40
+3  | Refrigerante | Bebidas | 5.00 | 20 | 100.00
+4  | Cerveja | Bebidas | 4.50 | 30 | 135.00
+```
 
 ---
 
-##  Estrutura do Projeto
+## Requisitos Atendidos (Parte 1)
 
-crud_manager.py → Classe genérica para operações CRUD
-database.py → Conexão e criação do banco SQLite
-main.py → Interface de menu e interação com o usuário
-models.py → Modelagem da entidade Produto
-reports.py → Geração de relatório de estoque
-utils.py → Funções auxiliares de entrada e validação
+Este projeto atende aos requisitos acadêmicos da Parte 1:
 
-
----
-
-##  Tecnologias Utilizadas
-
-- Python 3
-- SQLite
-- Programação Orientada a Objetos (POO)
+* Implementação de um sistema **CRUD** em Python
+* Utilização de **classe gerenciadora** para operações CRUD (`CRUDManager`)
+* Persistência de dados utilizando **SQLite**
+* Entidade principal com múltiplos atributos (>= 4)
+* Implementação das operações: inserir, alterar, pesquisar por nome, remover, listar todos, exibir um
+* Geração de **relatório resumido** do estoque com informações consolidadas
 
 ---
-
-##  Autor
-
-Lucas B. Silva  
-Projeto Acadêmico — Banco de Dados
